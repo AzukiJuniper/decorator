@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekko - 軟裝設計</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            background: url('hero-image.jpg') center/cover;
+            text-align: center;
+            color: white;
+        }
+        .hero-content {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn-light, .btn-dark {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .btn-light {
+            background: white;
+            color: black;
+        }
+        .btn-dark {
+            background: #ffcc00;
+            color: black;
+        }
+        .projects, .designers {
+            text-align: center;
+            padding: 50px;
+            background-color: white;
+        }
+        .projects h2, .designers h2 {
+            margin-bottom: 20px;
+        }
+        .projects-grid, .designers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .project-item, .designer-item {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .project-item img, .designer-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .about-section {
+            padding: 50px;
+            background-color: white;
+            text-align: center;
+        }
+        .service-process {
+            padding: 50px 20px;
+            background-color: #f9f9f9;
+            overflow: hidden;
+            text-align: center;
+        }
+        .service-process h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+        }
+        .process-steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding: 20px;
+        }
+        .step-item {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.5s ease;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+        .step-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 40px 40px 0;
+            border-color: transparent #ffcc00 transparent transparent;
+        }
+        .step-item.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: #ffcc00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .step-icon::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px dashed #ffcc00;
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        .step-icon span {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .step-content {
+            position: relative;
+            z-index: 1;
+        }
+        .step-content h3 {
+            margin: 0 0 15px 0;
+            font-size: 20px;
+            color: #333;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .step-content p {
+            margin: 0;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .faq-section {
+            padding: 50px;
+            background-color: white;
+            text-align: center;
+        }
+        .faq-section h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+        }
+        .faq-item {
+            margin: 20px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            max-width: 800px;
+            text-align: left;
+        }
+        .contact-section {
+            padding: 50px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .style-filter {
+            margin: 20px 0;
+        }
+        .style-filter button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .style-filter button.active {
+            background: #ffcc00;
+        }
+        
+        /* LINE預約按鈕樣式 */
+        .line-booking-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            background-color: #00c300;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .line-booking-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .line-booking-btn img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .project-item {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 在小螢幕上調整為單列顯示 */
+        @media (max-width: 992px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+            .step-item {
+                padding: 20px;
+            }
+            .step-icon {
+                width: 40px;
+                height: 40px;
+            }
+            .step-icon span {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Ekko</div>
+        <nav>
+            <ul>
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#about">關於我們</a></li>
+                <li><a href="#designers">軟裝設計師</a></li>
+                <li><a href="#services">服務流程</a></li>
+                <li><a href="#projects">作品案例</a></li>
+                <li><a href="#faq">常見問題</a></li>
+                <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>打造專屬於您的理想空間</h1>
+            <p>專業軟裝設計團隊，為您創造獨特的居家風格</p>
+            <div class="buttons">
+                <button class="btn-light">預約諮詢</button>
+                <button class="btn-dark">查看作品</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>關於我們</h2>
+        <p>Ekko致力於為客戶打造獨特的居家空間，我們擁有專業的軟裝設計團隊，為您提供最優質的服務。</p>
+        <!-- 這裡可以放置公司形象照 -->
+    </section>
+
+    <section id="designers" class="designers">
+        <h2>軟裝設計師</h2>
+        <div class="designers-grid">
+            <div class="designer-item">
+                <img src="designer1.jpg" alt="設計師1">
+                <h3>設計師A</h3>
+                <p>專長：日式禪意風格</p>
+            </div>
+            <div class="designer-item">
+                <img src="designer2.jpg" alt="設計師2">
+                <h3>設計師B</h3>
+                <p>專長：北歐風格</p>
+            </div>
+            <div class="designer-item">
+                <img src="designer3.jpg" alt="設計師3">
+                <h3>設計師C</h3>
+                <p>專長：敘利亞風格</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="service-process">
+        <h2>服務流程</h2>
+        <div class="process-steps">
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>1</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>接洽與溝通</h3>
+                        <p>了解需求與期望，提供專業建議</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>2</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>現場丈量與建議</h3>
+                        <p>實地勘察，提供規劃建議</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>3</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>平面配置提案</h3>
+                        <p>提供完整平面規劃方案</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>4</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>簽訂設計合約</h3>
+                        <p>確認方案，簽訂合作協議</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>5</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>3D模擬圖</h3>
+                        <p>製作3D效果圖展示設計</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>6</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>工班場勘</h3>
+                        <p>評估施工細節與可行性</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>7</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>工程報價</h3>
+                        <p>提供詳細預算明細</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>8</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>簽訂工程合約</h3>
+                        <p>確認細節，簽訂合約</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>9</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>工程施作</h3>
+                        <p>專業施工，品質把關</p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-border"></div>
+                <div class="step-circle">
+                    <div class="step-icon">
+                        <span>10</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>完工驗收</h3>
+                        <p>確保符合設計要求</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2>作品案例</h2>
+        <div class="style-filter">
+            <button class="active">全部</button>
+            <button>日式禪意</button>
+            <button>北歐風</button>
+            <button>地震風</button>
+        </div>
+        <div class="projects-grid">
+            <div class="project-item" data-style="japanese">
+                <img src="project1.jpg" alt="日式禪意作品">
+                <h3>日式禪意風格</h3>
+                <p>寧靜舒適的日式空間</p>
+            </div>
+            <div class="project-item" data-style="nordic">
+                <img src="project2.jpg" alt="北歐風格作品">
+                <h3>北歐風格</h3>
+                <p>簡約現代的北歐設計</p>
+            </div>
+            <div class="project-item" data-style="earthquake">
+                <img src="project3.jpg" alt="地震風格作品">
+                <h3>地震風格</h3>
+                <p>獨特的抗震設計</p>
+            </div>
+            <div class="project-item" data-style="japanese">
+                <img src="project5.jpg" alt="日式禪意作品2">
+                <h3>日式禪意風格</h3>
+                <p>禪意十足的日式空間</p>
+            </div>
+            <div class="project-item" data-style="nordic">
+                <img src="project5.jpg" alt="北歐風格作品2">
+                <h3>北歐風格</h3>
+                <p>清新自然的北歐設計</p>
+            </div>
+            <div class="project-item" data-style="earthquake">
+                <img src="project6.jpg" alt="地震風格作品2">
+                <h3>地震風格</h3>
+                <p>安全舒適的抗震設計</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq-section">
+        <h2>常見問題</h2>
+        <div class="faq-item">
+            <h3>Q: 軟裝設計的費用如何計算？</h3>
+            <p>A: 費用會根據空間大小、需求項目及材料選擇而有所不同，我們會提供詳細的報價單。</p>
+        </div>
+        <div class="faq-item">
+            <h3>Q: 施工時間大約需要多久？</h3>
+            <p>A: 一般案件約2-4週，視空間大小及複雜度而定。</p>
+        </div>
+        <!-- 可以繼續添加更多FAQ項目 -->
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>聯絡我們</h2>
+        <div class="contact-form">
+            <form id="contactForm">
+                <div class="form-group">
+                    <input type="text" placeholder="姓名" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="電子郵件" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="電話" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="訊息內容" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-dark">送出</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- LINE預約按鈕 -->
+    <a href="#" class="line-booking-btn" onclick="window.open('您的LINE官方帳號網址')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="LINE">
+        <span>我要預約</span>
+    </a>
+
+    <footer>
+        <p>&copy; 2025 Ekko . All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 作品案例篩選
+        const filterButtons = document.querySelectorAll('.style-filter button');
+        const projectItems = document.querySelectorAll('.project-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 移除所有按鈕的active類
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // 添加當前按鈕的active類
+                this.classList.add('active');
+
+                const filterValue = this.textContent.trim();
+                
+                projectItems.forEach(item => {
+                    if (filterValue === '全部') {
+                        item.style.display = 'block';
+                    } else {
+                        const style = item.getAttribute('data-style');
+                        if (filterValue === '日式禪意' && style === 'japanese') {
+                            item.style.display = 'block';
+                        } else if (filterValue === '北歐風' && style === 'nordic') {
+                            item.style.display = 'block';
+                        } else if (filterValue === '地震風' && style === 'earthquake') {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+
+        // 表單提交處理
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // 這裡可以添加表單提交到Google Sheets的邏輯
+            alert('感謝您的訊息，我們會盡快回覆！');
+        });
+
+        // 添加滾動顯示動畫
+        function checkVisibility() {
+            const items = document.querySelectorAll('.step-item');
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const isVisible = (rect.top <= window.innerHeight * 0.8);
+                if (isVisible) {
+                    item.classList.add('visible');
+                }
+            });
+        }
+
+        // 初始檢查
+        checkVisibility();
+
+        // 滾動時檢查
+        window.addEventListener('scroll', checkVisibility);
+    </script>
+</body>
+</html>
