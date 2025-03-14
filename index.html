@@ -330,11 +330,124 @@
                 font-size: 18px;
             }
         }
+
+        /* 响应式设计 */
+        @media screen and (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                padding: 0;
+                margin-top: 10px;
+            }
+
+            nav a {
+                padding: 10px;
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero {
+                height: 60vh;
+            }
+
+            .hero-content {
+                padding: 15px;
+                width: 90%;
+            }
+
+            .projects-grid, .designers-grid {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .step-item {
+                margin-bottom: 20px;
+            }
+
+            .about-section, .service-process, .projects, .designers {
+                padding: 30px 15px;
+            }
+
+            .contact-form {
+                width: 90%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+
+            .btn-light, .btn-dark {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 24px;
+            }
+
+            .hero-content p {
+                font-size: 16px;
+            }
+
+            .project-item img, .designer-item img {
+                height: 200px;
+            }
+
+            .style-filter {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .style-filter button {
+                width: 100%;
+                margin: 0;
+            }
+        }
+
+        /* 添加导航菜单按钮 */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+
+            nav {
+                display: none;
+                width: 100%;
+            }
+
+            nav.active {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">Ekko</div>
+        <div class="logo">Ekko 軟裝設計</div>
+        <div class="menu-toggle">☰</div>
         <nav>
             <ul>
                 <li><a href="#home">首頁</a></li>
@@ -599,72 +712,91 @@
     </footer>
 
     <script>
-        // 平滑滾動
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        document.addEventListener('DOMContentLoaded', function() {
+            // 菜单切换
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('nav');
+            
+            menuToggle.addEventListener('click', function() {
+                nav.classList.toggle('active');
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 });
             });
-        });
 
-        // 作品案例篩選
-        const filterButtons = document.querySelectorAll('.style-filter button');
-        const projectItems = document.querySelectorAll('.project-item');
+            // 作品案例筛选
+            const filterButtons = document.querySelectorAll('.style-filter button');
+            const projectItems = document.querySelectorAll('.project-item');
 
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // 移除所有按鈕的active類
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                // 添加當前按鈕的active類
-                this.classList.add('active');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // 添加当前按钮的active类
+                    this.classList.add('active');
 
-                const filterValue = this.textContent.trim();
-                
-                projectItems.forEach(item => {
-                    if (filterValue === '全部') {
-                        item.style.display = 'block';
-                    } else {
-                        const style = item.getAttribute('data-style');
-                        if (filterValue === '日式禪意' && style === 'japanese') {
-                            item.style.display = 'block';
-                        } else if (filterValue === '北歐風' && style === 'nordic') {
-                            item.style.display = 'block';
-                        } else if (filterValue === '地震風' && style === 'earthquake') {
+                    const filterValue = this.textContent.trim();
+                    
+                    projectItems.forEach(item => {
+                        if (filterValue === '全部') {
                             item.style.display = 'block';
                         } else {
-                            item.style.display = 'none';
+                            const style = item.getAttribute('data-style');
+                            if (filterValue === '日式禪意' && style === 'japanese') {
+                                item.style.display = 'block';
+                            } else if (filterValue === '北歐風' && style === 'nordic') {
+                                item.style.display = 'block';
+                            } else if (filterValue === '地震風' && style === 'earthquake') {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
                         }
+                    });
+                });
+            });
+
+            // 服务流程动画
+            const stepItems = document.querySelectorAll('.step-item');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            stepItems.forEach(item => {
+                observer.observe(item);
+            });
+
+            // 表单提交处理
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // 这里可以添加表单提交到Google Sheets的逻辑
+                alert('感謝您的訊息，我們會盡快回覆！');
+            });
+
+            // 点击导航链接时关闭菜单
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        nav.classList.remove('active');
                     }
                 });
             });
         });
-
-        // 表單提交處理
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // 這裡可以添加表單提交到Google Sheets的邏輯
-            alert('感謝您的訊息，我們會盡快回覆！');
-        });
-
-        // 添加滾動顯示動畫
-        function checkVisibility() {
-            const items = document.querySelectorAll('.step-item');
-            items.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                const isVisible = (rect.top <= window.innerHeight * 0.8);
-                if (isVisible) {
-                    item.classList.add('visible');
-                }
-            });
-        }
-
-        // 初始檢查
-        checkVisibility();
-
-        // 滾動時檢查
-        window.addEventListener('scroll', checkVisibility);
     </script>
 </body>
 </html>
